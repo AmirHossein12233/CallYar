@@ -1,22 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+
+    <!-- اینترنت برای اتصال به سرور CallYar و WebRTC -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- دوربین برای تماس تصویری -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- میکروفون برای تماس صوتی و تصویری -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- تنظیمات صوتی -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
+    <!-- بررسی وضعیت شبکه -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
         android:label="CallYar"
+        android:icon="@drawable/callyar_icon"
+        android:roundIcon="@drawable/callyar_icon"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".CallActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".HomeActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".MainActivity" android:screenOrientation="portrait" android:exported="true">
+        android:theme="@style/Theme.CallYar">
+
+        <!-- صفحه تماس -->
+        <activity
+            android:name=".CallActivity"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+
+        <!-- صفحه کاربران آنلاین -->
+        <activity
+            android:name=".HomeActivity"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+
+        <!-- صفحه ورود -->
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:exported="true">
+
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
     </application>
+
 </manifest>
