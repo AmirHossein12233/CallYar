@@ -35,7 +35,6 @@ public class CallYarSocket {
     private String currentUsername;
 
     private boolean connected = false;
-    private boolean closing = false;
 
     public CallYarSocket(Listener listener) {
 
@@ -63,9 +62,9 @@ public class CallYarSocket {
         }
 
         currentUsername = username;
-        closing = false;
 
         if (webSocket != null) {
+
             try {
                 webSocket.close(
                         1000,
@@ -76,6 +75,8 @@ public class CallYarSocket {
 
             webSocket = null;
         }
+
+        connected = false;
 
         try {
 
@@ -178,15 +179,10 @@ public class CallYarSocket {
                                         String reason
                                 ) {
 
-                                    try {
-
-                                        socket.close(
-                                                1000,
-                                                null
-                                        );
-
-                                    } catch (Exception ignored) {
-                                    }
+                                    socket.close(
+                                            1000,
+                                            null
+                                    );
                                 }
 
                                 @Override
@@ -225,11 +221,14 @@ public class CallYarSocket {
                                     String finalError =
                                             error;
 
-                                    handler.post(() ->
-                                            listener.onError(
-                                                    finalError
-                                            )
-                                    );
+                                    handler.post(() -> {
+
+                                        listener.onError(
+                                                finalError
+                                        );
+
+                                        listener.onDisconnected();
+                                    });
                                 }
                             }
                     );
@@ -252,7 +251,9 @@ public class CallYarSocket {
     }
 
     public synchronized boolean isConnected() {
-        return connected && webSocket != null;
+
+        return connected &&
+                webSocket != null;
     }
 
     public synchronized void send(
@@ -276,7 +277,6 @@ public class CallYarSocket {
 
     public synchronized void close() {
 
-        closing = true;
         connected = false;
 
         if (webSocket != null) {
